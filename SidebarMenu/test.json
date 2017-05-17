@@ -1,0 +1,355 @@
+//
+//  AppDelegate.swift
+//  SidebarMenu
+//
+//  Created by Simon Ng on 2/2/15.
+//  Copyright (c) 2015 AppCoda. All rights reserved.
+//
+/*
+import UIKit
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    var window: UIWindow?
+    
+    
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        //        let isUserLoggedIn = NSUserDefaults.standardUserDefaults().boolForKey("LogIn")
+        //        if(!isUserLoggedIn){
+        //            self.openLoginViewController()
+        //
+        //        } else{
+        //            let LoginView = LoginViewController()
+        //            LoginView.loadData()
+        //        }
+        return true
+    }
+    
+    func applicationWillResignActive(application: UIApplication) {
+        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    }
+    
+    func applicationDidEnterBackground(application: UIApplication) {
+        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    }
+    
+    func applicationWillEnterForeground(application: UIApplication) {
+        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    }
+    
+    func applicationDidBecomeActive(application: UIApplication) {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    }
+    
+    func applicationWillTerminate(application: UIApplication) {
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func openLoginViewController() {
+        //        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        //        let LoginView: LoginViewController = (storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController)
+        //        self.window?.rootViewController = LoginView
+        //        self.window?.makeKeyWindow()
+    }
+    
+    func openRevealViewController() {
+        //    SWRevealViewController
+        //        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        //        let SWRevealView: SWRevealViewController = (storyboard.instantiateViewControllerWithIdentifier("SWRevealViewController") as! SWRevealViewController)
+        //        self.window?.rootViewController = SWRevealView
+        //        self.window?.makeKeyWindow()
+    }
+    
+    
+    
+}
+ 
+ //
+ //  LoginViewController.swift
+ //  TaxUnion
+ //
+ //  Created by Bakbergen on 8/3/16.
+ //  Copyright © 2016 AppCoda. All rights reserved.
+ //
+ 
+ import UIKit
+ import Alamofire
+ 
+ 
+ 
+ class LoginViewController: UIViewController {
+ 
+ @IBOutlet var EmailTextField: UITextField!
+ @IBOutlet var passwordTextField: UITextField!
+ var arrayName = [String]()
+ var arrayPrice = [String]()
+ var arrayImageUrl = [String]()
+ var arrayDescription = [String]()
+ 
+ override func viewDidLoad() {
+ super.viewDidLoad()
+ 
+ // Do any additional setup after loading the view.
+ }
+ 
+ override func didReceiveMemoryWarning() {
+ super.didReceiveMemoryWarning()
+ // Dispose of any resources that can be recreated.
+ }
+ override func viewDidAppear(animated: Bool) {
+ let pref = NSUserDefaults.standardUserDefaults()
+ if ( pref.boolForKey("LoggedIn") == true ) {
+ let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+ appDelegate?.openRevealViewController()
+ }
+ }
+ 
+ func loadData(){
+ 
+ //        var userEmail = EmailTextField.text
+ //        var userPassword = passwordTextField.text
+ //
+ //
+ //        if(userEmail!.isEmpty || userPassword!.isEmpty) {return}
+ //
+ //        let headers = [
+ //            "cache-control": "no-cache",
+ //            "postman-token": "aa634619-6f1a-93e8-f713-8e3c60b821b2"
+ //        ]
+ //
+ //        var request = NSMutableURLRequest(URL: NSURL(string: "http://cabinet.taxunion.kz/login.php?iin="+userEmail!+"&password="+userPassword!)!,
+ //                                          cachePolicy: .UseProtocolCachePolicy,
+ //                                          timeoutInterval: 10000.0)
+ //        request.HTTPMethod = "GET"
+ //        request.allHTTPHeaderFields = headers
+ //
+ //        let session = NSURLSession.sharedSession()
+ //        let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+ //            if (error != nil) {
+ //                print(error)
+ //            } else {
+ //                let httpResponse = response as? NSHTTPURLResponse
+ //                print(httpResponse)
+ //            }
+ //            do {
+ //                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+ //                var isUserRegistered:Bool = false
+ //
+ //
+ //                if let parseJSONstatus = json["status"] as? String {
+ //                    print("result: \(parseJSONstatus)")
+ //                    if(parseJSONstatus == "OK") {
+ //                        //                        user is successful
+ //                        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "LogIn")
+ //                        NSUserDefaults.standardUserDefaults().synchronize()
+ //                        self.dismissViewControllerAnimated(true, completion: nil)
+ //
+ //                        if let goodsData = json["tovari"] as? [[String: AnyObject]]{
+ //                            for goods in goodsData{
+ //                                let name: String? = goods["name"] as? String
+ //                                self.arrayName.append(name!)
+ //                                self.arrayPrice.append((goods["price"] as? String)!)
+ //                                self.arrayImageUrl.append((goods["image"] as? String)!)
+ //                                self.arrayDescription.append((goods["description"] as? String)!)
+ //                                var SaveData =  SaveDataViewController.sharedInstance
+ //                                SaveData.arrayName = self.arrayName
+ //
+ //                            }
+ //                        }
+ //                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+ //                        appDelegate?.openRevealViewController()
+ //                        print(self.arrayName)
+ //
+ //                    }
+ //                    else if(parseJSONstatus == "ERROR"){
+ //                        var messageToDisplay : String = (json["message"] as? String)!
+ //                        dispatch_async(dispatch_get_main_queue(), {
+ //                            //display alert message
+ //                            var myAlert = UIAlertController(title: "Alert", message: messageToDisplay, preferredStyle: UIAlertControllerStyle.Alert)
+ //                            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default){ action in
+ //                            }
+ //
+ //                            myAlert.addAction(okAction)
+ //                            self.presentViewController(myAlert, animated: true, completion: nil)
+ //                        })
+ //                    }
+ //                }
+ //
+ //            } catch {
+ //                print("error serializing JSON: \(error)")
+ //            }
+ //        })
+ //        dataTask.resume()
+ }
+ 
+ @IBAction func loginButtonTapped(sender: AnyObject) {
+ Alamofire.request(.GET, "http://cabinet.taxunion.kz/login.php?iin="+EmailTextField.text!+"&password="+passwordTextField.text!, parameters: nil)
+ .responseJSON { response in
+ //                print(response.request)  // original URL request
+ //                print(response.response) // URL response
+ //                print(response.data)     // server data
+ //                print(response.result)   // result of response serialization
+ 
+ if let JSON = response.result.value {
+ print("JSON: \(JSON)")
+ let pref = NSUserDefaults.standardUserDefaults()
+ pref.setBool(true, forKey: "LoggedIn")
+ 
+ let tovariArray = JSON["tovari"]
+ pref.setObject(tovariArray, forKey: "tovari")
+ 
+ let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+ appDelegate?.openRevealViewController()
+ 
+ }
+ }
+ }
+ }
+ 
+ //
+ //  LoginViewController.swift
+ //  TaxUnion
+ //
+ //  Created by Bakbergen on 8/3/16.
+ //  Copyright © 2016 AppCoda. All rights reserved.
+ //
+ 
+ import UIKit
+ import Alamofire
+ 
+ 
+ 
+ class LoginViewController: UIViewController {
+ 
+ @IBOutlet var EmailTextField: UITextField!
+ @IBOutlet var passwordTextField: UITextField!
+ var arrayName = [String]()
+ var arrayPrice = [String]()
+ var arrayImageUrl = [String]()
+ var arrayDescription = [String]()
+ 
+ override func viewDidLoad() {
+ super.viewDidLoad()
+ 
+ // Do any additional setup after loading the view.
+ }
+ 
+ override func didReceiveMemoryWarning() {
+ super.didReceiveMemoryWarning()
+ // Dispose of any resources that can be recreated.
+ }
+ override func viewDidAppear(animated: Bool) {
+ let pref = NSUserDefaults.standardUserDefaults()
+ if ( pref.boolForKey("LoggedIn") == true ) {
+ let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+ appDelegate?.openRevealViewController()
+ }
+ }
+ 
+ func loadData(){
+ 
+ //        var userEmail = EmailTextField.text
+ //        var userPassword = passwordTextField.text
+ //
+ //
+ //        if(userEmail!.isEmpty || userPassword!.isEmpty) {return}
+ //
+ //        let headers = [
+ //            "cache-control": "no-cache",
+ //            "postman-token": "aa634619-6f1a-93e8-f713-8e3c60b821b2"
+ //        ]
+ //
+ //        var request = NSMutableURLRequest(URL: NSURL(string: "http://cabinet.taxunion.kz/login.php?iin="+userEmail!+"&password="+userPassword!)!,
+ //                                          cachePolicy: .UseProtocolCachePolicy,
+ //                                          timeoutInterval: 10000.0)
+ //        request.HTTPMethod = "GET"
+ //        request.allHTTPHeaderFields = headers
+ //
+ //        let session = NSURLSession.sharedSession()
+ //        let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+ //            if (error != nil) {
+ //                print(error)
+ //            } else {
+ //                let httpResponse = response as? NSHTTPURLResponse
+ //                print(httpResponse)
+ //            }
+ //            do {
+ //                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+ //                var isUserRegistered:Bool = false
+ //
+ //
+ //                if let parseJSONstatus = json["status"] as? String {
+ //                    print("result: \(parseJSONstatus)")
+ //                    if(parseJSONstatus == "OK") {
+ //                        //                        user is successful
+ //                        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "LogIn")
+ //                        NSUserDefaults.standardUserDefaults().synchronize()
+ //                        self.dismissViewControllerAnimated(true, completion: nil)
+ //
+ //                        if let goodsData = json["tovari"] as? [[String: AnyObject]]{
+ //                            for goods in goodsData{
+ //                                let name: String? = goods["name"] as? String
+ //                                self.arrayName.append(name!)
+ //                                self.arrayPrice.append((goods["price"] as? String)!)
+ //                                self.arrayImageUrl.append((goods["image"] as? String)!)
+ //                                self.arrayDescription.append((goods["description"] as? String)!)
+ //                                var SaveData =  SaveDataViewController.sharedInstance
+ //                                SaveData.arrayName = self.arrayName
+ //
+ //                            }
+ //                        }
+ //                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+ //                        appDelegate?.openRevealViewController()
+ //                        print(self.arrayName)
+ //
+ //                    }
+ //                    else if(parseJSONstatus == "ERROR"){
+ //                        var messageToDisplay : String = (json["message"] as? String)!
+ //                        dispatch_async(dispatch_get_main_queue(), {
+ //                            //display alert message
+ //                            var myAlert = UIAlertController(title: "Alert", message: messageToDisplay, preferredStyle: UIAlertControllerStyle.Alert)
+ //                            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default){ action in
+ //                            }
+ //
+ //                            myAlert.addAction(okAction)
+ //                            self.presentViewController(myAlert, animated: true, completion: nil)
+ //                        })
+ //                    }
+ //                }
+ //
+ //            } catch {
+ //                print("error serializing JSON: \(error)")
+ //            }
+ //        })
+ //        dataTask.resume()
+ }
+ 
+ @IBAction func loginButtonTapped(sender: AnyObject) {
+ Alamofire.request(.GET, "http://cabinet.taxunion.kz/login.php?iin="+EmailTextField.text!+"&password="+passwordTextField.text!, parameters: nil)
+ .responseJSON { response in
+ //                print(response.request)  // original URL request
+ //                print(response.response) // URL response
+ //                print(response.data)     // server data
+ //                print(response.result)   // result of response serialization
+ 
+ if let JSON = response.result.value {
+ print("JSON: \(JSON)")
+ let pref = NSUserDefaults.standardUserDefaults()
+ pref.setBool(true, forKey: "LoggedIn")
+ 
+ let tovariArray = JSON["tovari"]
+ pref.setObject(tovariArray, forKey: "tovari")
+ 
+ let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+ appDelegate?.openRevealViewController()
+ 
+ }
+ }
+ }
+ }
+ 
+
+
